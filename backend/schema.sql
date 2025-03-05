@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS Products(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(8,2) NOT NULL,
+    category_id int,
+    image_URL VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS Category(
+    category_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
