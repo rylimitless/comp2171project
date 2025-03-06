@@ -1,0 +1,1 @@
+ select *  from Products inner join Category on Products.category_id = Category.category_id;
