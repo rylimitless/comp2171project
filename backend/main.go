@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 
 	"backend/database"
+	dbutils "backend/db_utils"
 	"context"
 	"database/sql"
 	"strconv"
@@ -103,7 +105,7 @@ func main() {
 			offset, offsetErr := strconv.Atoi(r.URL.Query().Get("offset"))
 			limit, limitErr := strconv.Atoi(r.URL.Query().Get("limit"))
 			categoryFromQuery, categoryErr := strconv.Atoi(r.URL.Query().Get("category"))
-			search := r.URL.Query().Get("query")
+			search := r.URL.Query().Get("search")
 
 			if offsetErr != nil {
 				offset = 0
@@ -127,13 +129,25 @@ func main() {
 
 			} else {
 
-				if search == "" {
+				fmt.Println("nilll")
+				fmt.Println(search)
 
+				if search != "" {
+					s, err = dbutils.GetMatchProducts(db, search)
+					if err != nil {
+						http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+						fmt.Println(err)
+						return
+					}
+
+				} else {
+					fmt.Println("else")
+					s, err = queries.GetProducts(ctx, database.GetProductsParams{
+						Offset: int32(offset),
+						Limit:  int32(limit),
+					})
 				}
-				s, err = queries.GetProducts(ctx, database.GetProductsParams{
-					Offset: int32(offset),
-					Limit:  int32(limit),
-				})
+
 			}
 
 			if err != nil {
