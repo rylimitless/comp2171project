@@ -33,7 +33,7 @@ dependencies:
   cached_network_image: ^3.3.0
   flutter_riverpod: ^2.5.1 # Optional for state management
   google_fonts: ^4.0.4 # For custom fonts (optional)
-
+  animations: ^2.0.0 # This package provides some custom animations for Flutter widgets.
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,8 +62,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -6,19 +6,26 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RexCommerce',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      home: const HomePage(), // Set HomePage as the initial screen
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: const Color.fromARGB(255, 180, 56, 225),
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 180, 56, 225)),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/home': (context) => const HomePage(),
+        '/categories': (context) => const HomePage(), // Replace with actual Categories page when available
+        '/sell-item': (context) => const HomePage(),  // Replace with actual Sell Item page when available
+        '/settings': (context) => const HomePage(),   // Replace with actual Settings page when available
+      },
     );
   }
 }
