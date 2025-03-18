@@ -268,7 +268,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategoryCard(String title, String imageUrl) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
+      child: SizedBox(
         height: 100,
         child: Stack(
           children: [

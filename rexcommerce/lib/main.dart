@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rexcommerce/homePage.dart';
+import 'package:rexcommerce/itemsListing.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/categories': (context) => const HomePage(), // Replace with actual Categories page when available
         '/sell-item': (context) => const HomePage(),  // Replace with actual Sell Item page when available
         '/settings': (context) => const HomePage(),   // Replace with actual Settings page when available
+        '/itemsListing': (context) => ListingsScreen(), // Replace with actual Items Listing page when available
       },
     );
   }

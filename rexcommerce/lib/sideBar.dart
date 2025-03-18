@@ -57,6 +57,17 @@ class SideBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/home');
             },
           ),
+          // Browse option (new)
+          ListTile(
+            leading: const Icon(Icons.explore),
+            title: Text(
+              'Browse',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/itemsListing');
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.category),
             title: Text(
@@ -75,6 +86,17 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/sell-item');
+            },
+          ),
+          // Messages option (new)
+          ListTile(
+            leading: const Icon(Icons.message),
+            title: Text(
+              'Messages',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/messages');
             },
           ),
           ListTile(
