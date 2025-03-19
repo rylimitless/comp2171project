@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rexcommerce/sideBar.dart'; // Import the sidebar widget
+import 'package:rexcommerce/productDetails.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +26,7 @@ class Listing {
   final double price;
   final String imageUrl;
   final String description;
+  final String? meetupLocation; // Added meetupLocation field
 
   Listing({
     required this.title,
@@ -32,6 +34,7 @@ class Listing {
     required this.price,
     required this.imageUrl,
     required this.description,
+    this.meetupLocation, // Optional parameter
   });
 }
 
@@ -48,6 +51,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 599.99,
       imageUrl: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "A high-end smartphone with a 6.5-inch OLED display and 128GB storage.",
+      meetupLocation: "UWI Student Union Building",
     ),
     Listing(
       title: "Men's Casual Shirt",
@@ -55,6 +59,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 29.99,
       imageUrl: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Comfortable and stylish casual shirt for men.",
+      meetupLocation: "Faculty of Science & Technology",
     ),
     Listing(
       title: "Programming Book",
@@ -62,6 +67,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 49.99,
       imageUrl: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Learn programming with this comprehensive guide.",
+      meetupLocation: "Main Library",
     ),
     Listing(
       title: "Wireless Headphones",
@@ -69,6 +75,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 99.99,
       imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Noise-cancelling wireless headphones with 20-hour battery life.",
+      meetupLocation: "Computing Department",
     ),
     Listing(
       title: "Women's Summer Dress",
@@ -76,6 +83,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 39.99,
       imageUrl: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Lightweight and breathable summer dress for women.",
+      meetupLocation: "Social Sciences Building",
     ),
     Listing(
       title: "Cookbook",
@@ -83,6 +91,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 19.99,
       imageUrl: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "A collection of delicious recipes from around the world.",
+      meetupLocation: "UWI Visitor's Lodge",
     ),
     Listing(
       title: "Laptop Stand",
@@ -90,6 +99,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 35.99,
       imageUrl: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Ergonomic laptop stand for better posture.",
+      meetupLocation: "Engineering Building",
     ),
     Listing(
       title: "Math Textbook",
@@ -97,6 +107,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 59.99,
       imageUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Advanced mathematics textbook for university students.",
+      meetupLocation: "Mathematics Department",
     ),
     Listing(
       title: "Winter Jacket",
@@ -104,6 +115,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 89.99,
       imageUrl: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Warm and durable winter jacket for cold weather.",
+      meetupLocation: "UWI Bookshop",
     ),
     Listing(
       title: "Desk Organizer",
@@ -111,6 +123,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 24.99,
       imageUrl: "https://images.unsplash.com/photo-1585637071663-799845ad5212?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Compact desk organizer for your workspace.",
+      meetupLocation: "Faculty of Humanities",
     ),
     Listing(
       title: "Physics Textbook",
@@ -118,6 +131,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       price: 69.99,
       imageUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Comprehensive physics textbook for advanced learners.",
+      meetupLocation: "Physics Department",
     ),
   ];
 
@@ -291,86 +305,89 @@ class _ListingsScreenState extends State<ListingsScreen> {
               itemCount: paginatedListings.length,
               itemBuilder: (context, index) {
                 final listing = paginatedListings[index];
-                return Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Image with rounded top corners
-                      Expanded(
-                        flex: 4, // Increased from 3 to give more prominence to image
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                          child: Image.network(
-                            listing.imageUrl,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Colors.grey.shade300,
-                                child: const Icon(Icons.broken_image, color: Colors.grey),
-                              );
-                            },
+                return GestureDetector(
+                  onTap: () => _showProductDetails(context, listing),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Image with rounded top corners
+                        Expanded(
+                          flex: 4, // Increased from 3 to give more prominence to image
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                            child: Image.network(
+                              listing.imageUrl,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey.shade300,
+                                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      
-                      // Item details with more compact layout
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              listing.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold, 
-                                fontSize: 12
+                        
+                        // Item details with more compact layout
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                listing.title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, 
+                                  fontSize: 12
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            // Price and category on same row to save space
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "\$${listing.price.toStringAsFixed(2)}",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).primaryColor,
+                              const SizedBox(height: 4),
+                              // Price and category on same row to save space
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "\$${listing.price.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      _getCategoryIcon(listing.category),
-                                      size: 10,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      listing.category,
-                                      style: TextStyle(
-                                        fontSize: 9, 
-                                        color: Colors.grey.shade600
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        _getCategoryIcon(listing.category),
+                                        size: 10,
+                                        color: Colors.grey.shade600,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        listing.category,
+                                        style: TextStyle(
+                                          fontSize: 9, 
+                                          color: Colors.grey.shade600
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -422,6 +439,190 @@ class _ListingsScreenState extends State<ListingsScreen> {
           ],
         ),
       ),
+    );
+  }
+  
+  // Method to display product details in a popup overlay
+  void _showProductDetails(BuildContext context, Listing listing) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          elevation: 5,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with close button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Product Details',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+                Divider(),
+                // Content scrollable area
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.6,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Product image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            listing.imageUrl,
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        
+                        // Product title
+                        Text(
+                          listing.title,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        
+                        // Price and category
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '\$${listing.price.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            Chip(
+                              label: Text(listing.category),
+                              backgroundColor: Colors.blue.shade50,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        
+                        // Description
+                        Text(
+                          'Description',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          listing.description,
+                          style: TextStyle(
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        
+                        // Meetup Location - Added section
+                        if (listing.meetupLocation != null) ...[
+                          Text(
+                            'Meetup Location',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Card(
+                            elevation: 2,
+                            color: Colors.blue.shade50,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.location_on, color: Colors.blue),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      listing.meetupLocation!,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: 24),
+                        
+                        // Contact button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            icon: Icon(Icons.message),
+                            label: Text('Contact Seller'),
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Contacting seller...')),
+                              );
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
   

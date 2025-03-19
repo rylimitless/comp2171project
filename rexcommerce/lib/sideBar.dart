@@ -65,7 +65,7 @@ class SideBar extends StatelessWidget {
               style: GoogleFonts.poppins(),
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/itemsListing');
+              Navigator.pushReplacementNamed(context, '/productListing');
             },
           ),
           ListTile(
