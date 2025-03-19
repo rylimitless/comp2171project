@@ -97,7 +97,10 @@ class SideBar extends StatelessWidget {
               style: GoogleFonts.poppins(),
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/sell-item');
+              // Close the drawer first
+              Navigator.pop(context);
+              // Use push instead of pushReplacement to maintain navigation history
+              Navigator.pushNamed(context, '/sell-item');
             },
           ),
           ListTile(

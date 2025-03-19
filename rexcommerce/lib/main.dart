@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rexcommerce/homePage.dart';
 import 'package:rexcommerce/productListing.dart';
 import 'package:rexcommerce/profilePage.dart';
+import 'package:rexcommerce/sell_Item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomePage(),
         '/home': (context) => const HomePage(),
         '/profile': (context) => ProfilePage(),
-        '/sell-item': (context) => const HomePage(),  // Replace with actual Sell Item page when available
+        '/sell-item': (context) => const CreateListingScreen(),  // Replace with actual Sell Item page when available
         '/settings': (context) => const HomePage(),   // Replace with actual Settings page when available
         '/productListing': (context) => ListingsScreen(), // Replace with actual Items Listing page when available
       },

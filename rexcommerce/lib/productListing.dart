@@ -6,6 +6,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +28,10 @@ class Listing {
   final String imageUrl;
   final String description;
   final String? meetupLocation; // Added meetupLocation field
+  final String sellerName; // Added seller name
+  final String sellerImageUrl; // Added seller image URL
+  final double sellerRating; // Added seller rating
+  final String condition; // Added condition field
 
   Listing({
     required this.title,
@@ -34,15 +40,35 @@ class Listing {
     required this.imageUrl,
     required this.description,
     this.meetupLocation, // Optional parameter
+    this.sellerName = "Unknown Seller", // Default value
+    this.sellerImageUrl = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y", // Default avatar
+    this.sellerRating = 0.0, // Default rating
+    this.condition = "Used", // Default condition
   });
 }
 
 class ListingsScreen extends StatefulWidget {
+  const ListingsScreen({super.key});
+
   @override
   _ListingsScreenState createState() => _ListingsScreenState();
 }
 
 class _ListingsScreenState extends State<ListingsScreen> {
+  // Add a Set to track liked items
+  final Set<String> _likedItems = {};
+  
+  // Method to toggle like status
+  void _toggleLike(String title) {
+    setState(() {
+      if (_likedItems.contains(title)) {
+        _likedItems.remove(title);
+      } else {
+        _likedItems.add(title);
+      }
+    });
+  }
+  
   final List<Listing> _listings = [
     Listing(
       title: "Smartphone X",
@@ -51,6 +77,10 @@ class _ListingsScreenState extends State<ListingsScreen> {
       imageUrl: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "A high-end smartphone with a 6.5-inch OLED display and 128GB storage.",
       meetupLocation: "UWI Student Union Building",
+      sellerName: "John Smith",
+      sellerImageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+      sellerRating: 4.8,
+      condition: "Like New",
     ),
     Listing(
       title: "Men's Casual Shirt",
@@ -59,6 +89,10 @@ class _ListingsScreenState extends State<ListingsScreen> {
       imageUrl: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Comfortable and stylish casual shirt for men.",
       meetupLocation: "Faculty of Science & Technology",
+      sellerName: "Maria Johnson",
+      sellerImageUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+      sellerRating: 4.2,
+      condition: "New",
     ),
     Listing(
       title: "Programming Book",
@@ -67,6 +101,10 @@ class _ListingsScreenState extends State<ListingsScreen> {
       imageUrl: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Learn programming with this comprehensive guide.",
       meetupLocation: "Main Library",
+      sellerName: "David Wilson",
+      sellerImageUrl: "https://randomuser.me/api/portraits/men/67.jpg",
+      sellerRating: 4.9,
+      condition: "Good",
     ),
     Listing(
       title: "Wireless Headphones",
@@ -75,6 +113,9 @@ class _ListingsScreenState extends State<ListingsScreen> {
       imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Noise-cancelling wireless headphones with 20-hour battery life.",
       meetupLocation: "Computing Department",
+      sellerName: "Sarah Brown",
+      sellerImageUrl: "https://randomuser.me/api/portraits/women/22.jpg",
+      sellerRating: 4.5,
     ),
     Listing(
       title: "Women's Summer Dress",
@@ -83,6 +124,9 @@ class _ListingsScreenState extends State<ListingsScreen> {
       imageUrl: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
       description: "Lightweight and breathable summer dress for women.",
       meetupLocation: "Social Sciences Building",
+      sellerName: "Emily Davis",
+      sellerImageUrl: "https://randomuser.me/api/portraits/women/12.jpg",
+      sellerRating: 4.7,
     ),
     Listing(
       title: "Cookbook",
@@ -311,70 +355,96 @@ class _ListingsScreenState extends State<ListingsScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Stack(
                       children: [
-                        // Image with rounded top corners
-                        Expanded(
-                          flex: 4, // Increased from 3 to give more prominence to image
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                            child: Image.network(
-                              listing.imageUrl,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey.shade300,
-                                  child: const Icon(Icons.broken_image, color: Colors.grey),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        
-                        // Item details with more compact layout
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                listing.title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold, 
-                                  fontSize: 12
+                        // Original card content
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Image with rounded top corners
+                            Expanded(
+                              flex: 4,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                child: Image.network(
+                                  listing.imageUrl,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey.shade300,
+                                      child: const Icon(Icons.broken_image, color: Colors.grey),
+                                    );
+                                  },
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 4),
-                              // Price and category on same row to save space
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                            
+                            // Item details with more compact layout
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "\$${listing.price.toStringAsFixed(2)}",
+                                    listing.title,
                                     style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold, 
+                                      fontSize: 12
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                  const SizedBox(height: 4),
+                                  // Price and category on same row to save space
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "\$${listing.price.toStringAsFixed(2)}",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            _getCategoryIcon(listing.category),
+                                            size: 10,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            listing.category,
+                                            style: TextStyle(
+                                              fontSize: 9, 
+                                              color: Colors.grey.shade600
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  // Add condition display
+                                  const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       Icon(
-                                        _getCategoryIcon(listing.category),
+                                        Icons.inventory_2,
                                         size: 10,
-                                        color: Colors.grey.shade600,
+                                        color: Colors.green.shade600,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        listing.category,
+                                        listing.condition,
                                         style: TextStyle(
-                                          fontSize: 9, 
-                                          color: Colors.grey.shade600
+                                          fontSize: 9,
+                                          color: Colors.green.shade600,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -382,7 +452,35 @@ class _ListingsScreenState extends State<ListingsScreen> {
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        
+                        // Heart icon for liking - positioned at the top right
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.7),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                _likedItems.contains(listing.title) 
+                                    ? Icons.favorite 
+                                    : Icons.favorite_border,
+                                color: _likedItems.contains(listing.title) 
+                                    ? Colors.red 
+                                    : Colors.grey,
+                              ),
+                              iconSize: 20,
+                              padding: EdgeInsets.all(4),
+                              constraints: BoxConstraints(),
+                              onPressed: () {
+                                _toggleLike(listing.title);
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -471,7 +569,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header with close button
+                // Header with like and close buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -482,9 +580,32 @@ class _ListingsScreenState extends State<ListingsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
+                    Row(
+                      children: [
+                        // Add like button
+                        IconButton(
+                          icon: Icon(
+                            _likedItems.contains(listing.title)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: _likedItems.contains(listing.title)
+                                ? Colors.red
+                                : Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _toggleLike(listing.title);
+                            });
+                            Navigator.of(context).pop();
+                            // Reopen dialog to reflect changes
+                            _showProductDetails(context, listing);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -537,6 +658,70 @@ class _ListingsScreenState extends State<ListingsScreen> {
                               backgroundColor: Colors.blue.shade50,
                             ),
                           ],
+                        ),
+                        
+                        // Add condition chip
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Chip(
+                            label: Text('Condition: ${listing.condition}'),
+                            backgroundColor: Colors.green.shade50,
+                            avatar: Icon(Icons.inventory_2, size: 16, color: Colors.green),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        
+                        // Seller information - Added section
+                        Text(
+                          'Seller Information',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Card(
+                          elevation: 1,
+                          color: Colors.grey.shade50,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(listing.sellerImageUrl),
+                                  radius: 20,
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        listing.sellerName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.star, color: Colors.amber, size: 16),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            listing.sellerRating.toString(),
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         SizedBox(height: 16),
                         

@@ -10,7 +10,7 @@ class ListingDetails extends StatelessWidget {
   final bool showBackButton;
 
   // Add a constructor that makes the back button optional
-  ListingDetails({
+  const ListingDetails({super.key, 
     required this.id, 
     required this.listing,
     this.showBackButton = true,
@@ -162,6 +162,63 @@ class ListingDetails extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
+            
+            // Seller Information - Make it more prominent
+            Text('Seller Information', style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(listing.seller.profileImage),
+                      radius: 24,
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            listing.seller.name,
+                            style: GoogleFonts.lato(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(Icons.star, color: Colors.amber, size: 18),
+                              SizedBox(width: 4),
+                              Text(
+                                '${listing.seller.rating} rating',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(Icons.inventory_2, color: Colors.blue, size: 18),
+                              SizedBox(width: 4),
+                              Text(
+                                'Condition: ${listing.condition}',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            
             // Actions
             if (listing.isBarter) ...[
               AlertDialog(
