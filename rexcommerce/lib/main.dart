@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rexcommerce/homePage.dart';
 import 'package:rexcommerce/productListing.dart';
+import 'package:rexcommerce/profilePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomePage(),
         '/home': (context) => const HomePage(),
-        '/categories': (context) => const HomePage(), // Replace with actual Categories page when available
+        '/profile': (context) => ProfilePage(),
         '/sell-item': (context) => const HomePage(),  // Replace with actual Sell Item page when available
         '/settings': (context) => const HomePage(),   // Replace with actual Settings page when available
         '/productListing': (context) => ListingsScreen(), // Replace with actual Items Listing page when available

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rexcommerce/sideBar.dart'; // Import the sidebar widget
-import 'package:rexcommerce/productDetails.dart';
 
 void main() {
   runApp(MyApp());

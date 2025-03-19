@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
 
 class SideBar extends StatelessWidget {
-  const SideBar({super.key});
+  final String? profileImagePath;
+  final String name;
+  final String email;
+
+  const SideBar({
+    super.key, 
+    this.profileImagePath,
+    this.name = 'Your Name',
+    this.email = 'your.email@example.com',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +29,28 @@ class SideBar extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: const NetworkImage(
-                    'https://images.unsplash.com/photo-1541546789-bf45d4d548d2',
-                  ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/profile');
+                  },
+                  child: profileImagePath != null
+                    ? CircleAvatar(
+                        radius: 35,
+                        backgroundImage: FileImage(File(profileImagePath!)),
+                      )
+                    : CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        child: const Icon(
+                          Icons.account_circle,
+                          size: 60,
+                          color: Colors.white,
+                        ),
+                      ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Your Name',
+                  name,
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -36,7 +59,7 @@ class SideBar extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'your.email@example.com',
+                  email,
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: Colors.white,
@@ -46,7 +69,7 @@ class SideBar extends StatelessWidget {
             ),
           ),
           
-          // Menu items
+          // First section (no name)
           ListTile(
             leading: const Icon(Icons.home),
             title: Text(
@@ -57,7 +80,6 @@ class SideBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/home');
             },
           ),
-          // Browse option (new)
           ListTile(
             leading: const Icon(Icons.explore),
             title: Text(
@@ -66,16 +88,6 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/productListing');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.category),
-            title: Text(
-              'Categories',
-              style: GoogleFonts.poppins(),
-            ),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/categories');
             },
           ),
           ListTile(
@@ -88,7 +100,6 @@ class SideBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/sell-item');
             },
           ),
-          // Messages option (new)
           ListTile(
             leading: const Icon(Icons.message),
             title: Text(
@@ -99,14 +110,28 @@ class SideBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/messages');
             },
           ),
+          
+          // Second section - "Quick Actions"
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+            child: Text(
+              'Quick Actions',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+          ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: const Icon(Icons.account_circle),
             title: Text(
-              'Settings',
+              'Profile',
               style: GoogleFonts.poppins(),
             ),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/settings');
+              Navigator.pushReplacementNamed(context, '/profile');
             },
           ),
           ListTile(
@@ -155,6 +180,16 @@ class SideBar extends StatelessWidget {
                   );
                 },
               );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(
+              'Settings',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
         ],
