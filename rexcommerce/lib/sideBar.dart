@@ -104,6 +104,16 @@ class SideBar extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.inventory),
+            title: Text(
+              'My Listings',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/myListings');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.message),
             title: Text(
               'Messages',
@@ -111,6 +121,40 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/messages');
+            },
+          ),
+          
+          // Special Features Section
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+            child: Text(
+              'Special Features',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.gavel),
+            title: Text(
+              'Bidding',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/bidding');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.school),
+            title: Text(
+              'Student Promo',
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/student-promo');
             },
           ),
           

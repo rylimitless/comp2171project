@@ -13,7 +13,7 @@ class _CreateListingScreenState extends State<CreateListingScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isBidding = false;
   bool _loading = false;
-  List<File> _images = [];
+  final List<File> _images = [];
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
