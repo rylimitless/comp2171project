@@ -221,8 +221,8 @@ class _StudentPromotionState extends State<StudentPromotion> {
                               const SizedBox(height: 8.0),
                               _selectedImage != null
                                 ? Container(
-                                    height: 100,
-                                    width: double.infinity,
+                                    height: 150,
+                                    width: 150, // Make width equal to height for square
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       borderRadius: BorderRadius.circular(4.0),
@@ -233,8 +233,8 @@ class _StudentPromotionState extends State<StudentPromotion> {
                                     ),
                                   )
                                 : Container(
-                                    height: 100,
-                                    width: double.infinity,
+                                    height: 150,
+                                    width: 150, // Make width equal to height for square
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
                                       borderRadius: BorderRadius.circular(4.0),
@@ -251,6 +251,7 @@ class _StudentPromotionState extends State<StudentPromotion> {
                           onPressed: _pickImage,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 180, 56, 225),
+                            foregroundColor: Colors.white, // Add this line to make text white
                           ),
                           child: const Text('Upload Image'),
                         ),
@@ -301,60 +302,64 @@ class _StudentPromotionState extends State<StudentPromotion> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Add image to the promotion card
+                            // Make image container square
                             if (promo.image != null)
-                              Container(
-                                height: 150,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(4.0),
-                                    topRight: Radius.circular(4.0),
-                                  ),
-                                ),
-                                child: Image.file(
-                                  promo.image!,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ListTile(
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Row(
                                 children: [
-                                  Text(promo.name),
-                                  Chip(
-                                    backgroundColor: promo.isApplied ? Colors.green[100] : Colors.grey[200],
-                                    label: Text(
-                                      promo.isApplied ? 'Applied' : 'Not Applied',
-                                      style: TextStyle(
-                                        color: promo.isApplied ? Colors.green[800] : Colors.grey[800],
+                                  Container(
+                                    height: 150,
+                                    width: 150, // Make width equal to height for square
+                                    child: Image.file(
+                                      promo.image!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            promo.name,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4.0),
+                                          Text(promo.description),
+                                          const SizedBox(height: 4.0),
+                                          Text(
+                                            'Discount: ${promo.discountAmount}${promo.discountType == 'Percentage' ? '%' : '\$'} | Code: ${promo.promoCode}',
+                                          ),
+                                          Text(
+                                            'Valid: ${formatDate(promo.startDate)} to ${formatDate(promo.endDate)}',
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(promo.description),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    'Discount: ${promo.discountAmount}${promo.discountType == 'Percentage' ? '%' : '\$'} | Code: ${promo.promoCode}',
-                                  ),
-                                  Text(
-                                    'Valid: ${formatDate(promo.startDate)} to ${formatDate(promo.endDate)}',
-                                  ),
-                                ],
-                              ),
-                              isThreeLine: true,
-                              trailing: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: promo.isApplied ? Colors.red : const Color.fromARGB(225, 255, 180, 56),
+                            if (promo.image == null)
+                              ListTile(
+                                title: Text(promo.name),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(promo.description),
+                                    const SizedBox(height: 4.0),
+                                    Text(
+                                      'Discount: ${promo.discountAmount}${promo.discountType == 'Percentage' ? '%' : '\$'} | Code: ${promo.promoCode}',
+                                    ),
+                                    Text(
+                                      'Valid: ${formatDate(promo.startDate)} to ${formatDate(promo.endDate)}',
+                                    ),
+                                  ],
                                 ),
-                                onPressed: () => _togglePromotion(index),
-                                child: Text(promo.isApplied ? 'Remove' : 'Apply'),
+                                isThreeLine: true,
                               ),
-                            ),
                           ],
                         ),
                       );
@@ -397,7 +402,6 @@ class _StudentPromotionState extends State<StudentPromotion> {
         startDate: _startDate,
         endDate: _endDate,
         image: _selectedImage, // Add the selected image
-        isApplied: false,
       );
 
       // Add to list and clear form
@@ -420,26 +424,9 @@ class _StudentPromotionState extends State<StudentPromotion> {
       );
     });
   }
-
-  void _togglePromotion(int index) {
-    setState(() {
-      _promotions[index].isApplied = !_promotions[index].isApplied;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _promotions[index].isApplied
-              ? 'Promotion applied successfully'
-              : 'Promotion removed',
-        ),
-        backgroundColor: _promotions[index].isApplied ? Colors.green : Colors.orange,
-      ),
-    );
-  }
 }
 
-// Updated model class for promotions
+// Updated model class for promotions - removed isApplied property
 class Promotion {
   final String name;
   final String description;
@@ -448,8 +435,7 @@ class Promotion {
   final String promoCode;
   final DateTime startDate;
   final DateTime endDate;
-  final File? image; // Add image property
-  bool isApplied;
+  final File? image;
 
   Promotion({
     required this.name,
@@ -460,6 +446,5 @@ class Promotion {
     required this.startDate,
     required this.endDate,
     this.image,
-    this.isApplied = false,
   });
 }

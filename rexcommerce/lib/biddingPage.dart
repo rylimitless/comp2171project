@@ -69,7 +69,7 @@ class _BiddingPageState extends State<BiddingPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bidding Items'),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(225, 180, 56, 180),
       ),
       drawer: const SideBar(), // Add the sidebar as a drawer
       body: bidItems.isEmpty
@@ -222,7 +222,7 @@ class _BidItemCardState extends State<BidItemCard> {
                             child: Center(
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.blue,
+                                color: const Color.fromARGB(225, 180, 56, 180),
                                 value: loadingProgress.expectedTotalBytes != null
                                     ? loadingProgress.cumulativeBytesLoaded / 
                                         loadingProgress.expectedTotalBytes!
@@ -299,8 +299,8 @@ class _BidItemCardState extends State<BidItemCard> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: const Color.fromARGB(255, 180, 56, 180),
+                      foregroundColor: Colors.white,
                     ),
                     child: const Text('Place Bid'),
                   ),
