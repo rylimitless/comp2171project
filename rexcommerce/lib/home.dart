@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:rexcommerce/app_provider.dart';
+import 'package:rexcommerce/browse.dart';
 import 'package:rexcommerce/listing.dart';
 import 'package:rexcommerce/seller.dart';
 import 'package:rexcommerce/widgets/nav_bar.dart';
@@ -33,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 index: index,
                 children: [
                   ListingView(),
-                  Text("Browse"),
+                  BrowsePage(),
                   AddProductPage(),
                   ListingPage(),
                 ],

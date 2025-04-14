@@ -83,6 +83,32 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<void> GetProducts() async {
+    products.clear();
+    final records = await pb.collection('item').getFullList(
+      filter: 'seller="${store.record!.id}"',
+      expand: 'seller'
+      );
+
+    for (var record in records) {
+      final seller_name = (record.get<Map>("expand.seller")['name']);
+      final seller_id = record.getStringValue('seller');
+      final name = record.getStringValue('title');
+      final price = record.getDoubleValue('price');
+      final description = record.getStringValue('description');
+      final condition = record.getStringValue('condition');
+      final url = record.getStringValue('img');
+      final category_id = record.getStringValue('category_id');
+
+      final product = Products(name, url, category_id, description, price,
+          condition, seller_name, seller_id);
+      products.add(product);
+      
+      notifyListeners();
+    }
+  }
+
+   Future<void> GetMyProducts() async {
+    products.clear();
     final records = await pb.collection('item').getFullList(expand: 'seller');
 
     for (var record in records) {
@@ -103,6 +129,7 @@ class AppProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   Future<bool> createListing(Products prod , String category) async {
     Logger().i("Creating ${prod.condition}");

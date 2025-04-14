@@ -8,15 +8,15 @@ import 'package:forui/assets.dart';
 import 'package:rexcommerce/widgets/chat_modal.dart';
 import 'package:rexcommerce/widgets/nav_bar.dart';
 
-class ListingPage extends StatefulWidget {
-  const ListingPage({super.key});
+class BrowsePage extends StatefulWidget {
+  const BrowsePage({super.key});
 
   @override
   @override
-  State<ListingPage> createState() => _ListingPageState();
+  State<BrowsePage> createState() => _ListingPageState();
 }
 
-class _ListingPageState extends State<ListingPage> {
+class _ListingPageState extends State<BrowsePage> {
   @override
   Widget build(BuildContext context) =>
       Consumer<AppProvider>(builder: (context, app, child) {
@@ -25,7 +25,7 @@ class _ListingPageState extends State<ListingPage> {
           child: FScaffold(
             header: FHeader(
               title: Text(
-                'My Listings',
+                'All Listings',
                 style: TextStyle(fontSize: 15),
               ),
               actions: [
