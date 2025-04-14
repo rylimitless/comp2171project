@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (_formKey.currentState!.validate()) {
 
                           
-                            bool isLoggedIn = await app.login();
+                            bool isLoggedIn = await app.login(username,password);
 
                             Logger().i(isLoggedIn);
 
@@ -115,6 +115,13 @@ class _LoginPageState extends State<LoginPage> {
                               // ignore: use_build_context_synchronously
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage(title: 'Home')));
                             }
+                            } else {
+                              toastification.show(
+                              // optional if you use ToastificationWrapper
+                              title: Text('Error Logging in'),
+                              type: ToastificationType.error,
+                              autoCloseDuration: const Duration(seconds: 2),
+                            );
                             }
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.

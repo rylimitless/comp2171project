@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forui/theme.dart';
 import 'package:forui/forui.dart';
-import 'package:rexcommerce/app_provider.dart'; // Import your Product class definition
+import 'package:rexcommerce/app_provider.dart';
+import 'package:rexcommerce/chat.dart'; // Import your Product class definition
 
 class ItemModal extends StatelessWidget {
   final Products product; // Add product field
@@ -16,27 +17,37 @@ class ItemModal extends StatelessWidget {
       // Wrap the content in SingleChildScrollView
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min, // Keep this for initial sizing
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FCard(
-                subtitle: Row(
+                subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "\$${product.price}", // Use actual product data
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "\$${product.price}", // Use actual product data
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          product.condition,
+                        ),
+                      ],
+                      
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      product.condition,
-                    ),
+                  Text(product.description,
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  ), // Use actual product data
+
                   ],
                 ),
                 title: Text(
@@ -61,9 +72,11 @@ class ItemModal extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              Text(product.description), // Use actual product data
-              SizedBox(height: 16),
-              FButton(label: Text("Contact Seller"), onPress: () {}),
+              FButton(label: Text("Contact Seller"), onPress: () {
+
+                //TODO open up chat page 
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage("")));
+              }),
             ],
           ),
         ),

@@ -40,7 +40,7 @@ class _ListingPageState extends State<ListingPage> {
                     touchHoverExitDuration: Duration.zero,
                     behavior: HitTestBehavior.translucent,
                     onPress: () async{
-                        await app.GetProducts();
+                        await app.GetMyProducts();
                       
                     },
                     child: FIcon(FAssets.icons.refreshCw)),
@@ -82,6 +82,7 @@ class _ListingPageState extends State<ListingPage> {
                               Logger().i("Pressed");
 
                               showFSheet(
+                                mainAxisMaxRatio: 0.9,
                                 context: context,
                                 side: FLayout.btt,
                                 builder: (context) => ItemModal(

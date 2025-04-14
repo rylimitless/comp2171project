@@ -7,7 +7,7 @@ import 'package:forui/forui.dart';
 import 'package:forui/assets.dart';
 import 'package:rexcommerce/widgets/chat_modal.dart';
 import 'package:rexcommerce/widgets/nav_bar.dart';
-
+import 'package:rexcommerce/widgets/category_modal.dart';
 class BrowsePage extends StatefulWidget {
   const BrowsePage({super.key});
 
@@ -17,6 +17,7 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _ListingPageState extends State<BrowsePage> {
+
   @override
   Widget build(BuildContext context) =>
       Consumer<AppProvider>(builder: (context, app, child) {
@@ -24,10 +25,29 @@ class _ListingPageState extends State<BrowsePage> {
           data: FThemes.zinc.light,
           child: FScaffold(
             header: FHeader(
-              title: Text(
-                'All Listings',
+              title: FTappable.animated(
+                    semanticLabel: 'Label',
+                    semanticSelected: false,
+                    excludeSemantics: false,
+                    builder: (context, state, child) => child!,
+                    focusNode: FocusNode(),
+                    onFocusChange: (focused) {},
+                    touchHoverEnterDuration: const Duration(milliseconds: 300),
+                    touchHoverExitDuration: Duration.zero,
+                    behavior: HitTestBehavior.translucent,
+                    onPress: () async{
+                        // await app.GetProducts();
+                      showFSheet(
+                                context: context,
+                                side: FLayout.btt,
+                                builder: (context) => CategoryModal(),
+                              );
+                    },
+                    child: Text(
+                app.selectedCategory,
                 style: TextStyle(fontSize: 15),
-              ),
+              ),), 
+              
               actions: [
                 FTappable.animated(
                     semanticLabel: 'Label',
@@ -54,8 +74,13 @@ class _ListingPageState extends State<BrowsePage> {
                     height: 10,
                   ),
                   FTextField(
+                    onChange: (value) {
+                      app.filterProducts(query: value, category: null);
+                    },
                     onSubmit: (value) {
                       // Logger().i("Submitted");
+                      app.filterProducts(query: value, category: null);
+
                     },
                     prefixBuilder: (context, value, child) => Padding(
                       padding: const EdgeInsets.all(8.0),

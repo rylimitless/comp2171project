@@ -30,16 +30,17 @@ String prodCondition = "";
 String seller_name = "";
 String seller_id = "";
 String name = "";
+String date = "";
 bool isUrlValid = true;
 
-class AddProductPage extends StatefulWidget {
-  const AddProductPage({super.key});
+class AddsPage extends StatefulWidget {
+  const AddsPage({super.key});
 
   @override
-  State<AddProductPage> createState() => _AddProductPageState();
+  State<AddsPage> createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _AddProductPageState extends State<AddsPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _urlController = TextEditingController();
@@ -138,7 +139,7 @@ class _AddProductPageState extends State<AddProductPage> {
       child: FScaffold(
         header: FHeader(
           title: Text(
-            'Add New Product',
+            'Add New Promo',
             style: TextStyle(fontSize: 15),
           ),
           actions: [
@@ -215,16 +216,32 @@ class _Section1 extends State<Section1> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FTextField(
-                  label: Text("Enter Product Name"),
+                  label: Text("Enter Promo Name"),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Enter a product name";
+                      return "Enter a Promo name";
                     }
                     if (value.length > 20) {
-                      return "Product name Too long";
+                      return "Promo name Too long";
                     }
 
                     prodName = value;
+                    print(prodName);
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20,),
+                     FTextField(
+                  label: Text("Enter Promo Date"),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter a Promo Date";
+                    }
+                    if (value.length > 20) {
+                      return "Promo name Too long";
+                    }
+
+                    date = value;
                     print(prodName);
                     return null;
                   },
@@ -239,7 +256,7 @@ class _Section1 extends State<Section1> {
                   },
                   label: Row(
                     children: [
-                      Text("Enter Product Description"),
+                      Text("Enter Promo Description"),
                       SizedBox(
                         width: 5,
                       ),
@@ -275,17 +292,46 @@ class _Section1 extends State<Section1> {
                   height: 40,
                 ),
                 FButton(
-                    onPress: () {
+                    onPress: () async{
                       if (_section1Key.currentState!.validate()) {
                         // If the form is valid, display a snackbar. In the real world,
                         // you'd often call a server or save the information in a database.
-                        setState(() {
-                          Provider.of<AppProvider>(context, listen: false)
-                              .changeIndex(1);
-                        });
+                        // setState(() {
+                        //   Provider.of<AppProvider>(context, listen: false)
+                        //       .changeIndex(1);
+                        // });
+               bool success = await Provider.of<AppProvider>(context, listen: false).createAd(prodName, description, url, date);
+                        //       .changeIndex(1);
+                          if (success) {
+
+
+                      // Handle invalid price input
+                      toastification.show(
+                        title: const Text('Promo Request Sent'),
+                        type: ToastificationType.success,
+                        style: ToastificationStyle.flat,
+                        autoCloseDuration: const Duration(seconds: 1),
+                      );
+
+                      prodName = "";
+                      date = "";
+                      description = "";
+                      url ="";
+
+                      // Provider.of<AppProvider>(context, listen: false)
+                      //         .changeIndex(0);
+                      Provider.of<AppProvider>(context,listen: false).sethomeIndex(0);
+                    } else {
+                      toastification.show(
+                        title: const Text('Promo Request Failed'),
+                        type: ToastificationType.error,
+                        style: ToastificationStyle.flat,
+                        autoCloseDuration: const Duration(seconds: 1));
+                    } 
+
                       }
                     },
-                    label: Text("Next"))
+                    label: Text("Create Promotion"))
               ],
             ),
           )),
@@ -321,35 +367,8 @@ class _Section2 extends State<Section2> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Visibility(
-                  visible: !isBidding,
-                  child: FTextField(
-                    label: Text("Enter Product Price"),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Enter a product price name";
-                      }
-
-                      if (double.tryParse(value) != null &&
-                          double.tryParse(value)! > 10000) {
-                        return "Item price cannot be greater than \$10000";
-                      }
-
-                      final val = double.tryParse(value);
-                      price = val!;
-                      return null;
-                    },
-                  ),
-                ),
-                FSwitch(
-                  label: const Text('Bids Only'),
-                  semanticLabel: 'Bidding Item',
-                  value: isBidding,
-                  onChange: (value) => setState(() {
-                    isBidding = value;
-                    isProductBidding = isBidding;
-                  }),
-                ),
+                
+              
                 SizedBox(
                   height: 20,
                 ),
