@@ -34,10 +34,9 @@ class ItemModal extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 10),
-                                  Text(
-                                    product.condition,
-                                  ),
-
+                    Text(
+                      product.condition,
+                    ),
                   ],
                 ),
                 title: Text(
@@ -51,7 +50,8 @@ class ItemModal extends StatelessWidget {
                   height: 150, // Keep or adjust as needed
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(product.url), // Use actual product data URL
+                      image: NetworkImage(
+                          product.url), // Use actual product data URL
                       fit: BoxFit.cover,
                       onError: (exception, stackTrace) {
                         // print("Error loading image in modal: $exception");
